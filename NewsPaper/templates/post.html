@@ -6,4 +6,6 @@ Post
 
 {% block content %}
 <h1>{{ post }}</h1>
+<h2>{{ post.time_created|date:'d M Y' }}</h2>
+<p>{{ post.content }}</p>
 {% endblock content %}
