@@ -1,0 +1,55 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% load custom_filters %}
+
+{% block content %}
+<form method="GET">
+    <div>
+        <label for="{{ filter.form.title_field.id_for_label }}">Post Title:</label>
+        {{ filter.form.title_field }}
+    </div>
+
+    <div>
+        <label for="{{ filter.form.author.id_for_label }}">Author:</label>
+        {{ filter.form.author }}
+    </div>
+
+    <div>
+        <label for="{{ filter.form.date_field.id_for_label }}">Date:</label>
+        <input type="date" name="{{ filter.form.date_field.name }}"
+               value="{{ filter.form.date_field.value|default:'' }}"
+               min="{{ filter.form.date_field.field.widget.attrs.min }}"
+               max="{{ filter.form.date_field.field.widget.attrs.max }}"
+        >
+    </div>
+
+    <input type="submit" value="Найти">
+</form>
+
+   <h1>Все посты {{filter.qs|length}}</h1>
+   <hr>
+   {% if posts %}
+       <table>
+           <tr>
+               <td>Заголовок</td>
+               <td>Дата публикации</td>
+               <td>Текст</td>
+           </tr>
+           {% for post in filter.qs %}
+           <tr>
+               <td>{{ post.title }}</td>
+               <td>{{ post.time_created|date:'d M Y' }}</td>
+               <td>{{ post.content|truncatewords:20|cencor }}</td>
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Новостей нет!</h2>
+   {% endif %}
+
+{% endblock content %}
