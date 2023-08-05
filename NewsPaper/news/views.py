@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+from .forms import NewsForm
 from .models import Post
 from .filters import PostFilter
 
 
 class PostsList(ListView):
-    paginate_by = 1
+    paginate_by = 2
     model = Post
     ordering = ['time_created']
     template_name = 'posts.html'
@@ -30,7 +32,27 @@ class PostsSearch(ListView):
 
 
 class PostsDetail(DetailView):
-    model = Post
+    # model = Post
     template_name = 'post.html'
-    context_object_name = 'post'
+    queryset = Post.objects.all()
+    # context_object_name = 'post'
 
+
+class PostsCreateView(CreateView):
+    template_name = 'news_create.html'
+    form_class = NewsForm
+
+
+class PostsUpdateView(UpdateView):
+    template_name = 'news_create.html'
+    form_class = NewsForm
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('pk')
+        return Post.objects.get(pk=id)
+
+
+class PostsDeleteView(DeleteView):
+    template_name = 'news_delete.html'
+    queryset = Post.objects.all()
+    success_url = '/news/'

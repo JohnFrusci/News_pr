@@ -1,0 +1,41 @@
+{% extends 'default.html' %}
+ 
+{% block title %} News list {% endblock title %}
+ 
+{% block content %}
+<h2>Вы действительно хотите удалить данный пост?</h2>
+<table>
+    <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            Time Created
+        </th>
+        <th>
+            Content
+        </th>
+        <th>
+            Rating
+        </th>
+    </thead>
+    <tr>
+        <td>
+            {{ post }}
+        </td>
+        <td>
+            {{ post.time_created|date:'d M Y' }}
+        </td>
+        <td>
+            {{ post.content }}
+        </td>
+        <td>
+            {{ post.rating }}
+        </td>
+    </tr>
+</table>
+ 
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %} 
