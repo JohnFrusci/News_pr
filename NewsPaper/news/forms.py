@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.forms import ModelForm, BooleanField
 from .models import Post
 from allauth.account.forms import SignupForm
@@ -16,4 +17,12 @@ class CommonSignupForm(SignupForm):
         user = super(CommonSignupForm, self).save(request)
         common_group = Group.objects.get(name='common')
         common_group.user_set.add(user)
+
+        send_mail(
+            subject=user.username,
+            message='Вы успешно зарегались',
+            from_email='ybekberdiyev@yandex.ru',
+            recipient_list=[str(user.email), ]
+        )
+
         return user

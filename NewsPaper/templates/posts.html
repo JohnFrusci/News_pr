@@ -25,6 +25,11 @@ Posts
                </td>
                <td>{{ post.time_created|date:'d M Y' }}</td>
                <td>{{ post.content|truncatewords:10|cencor }}</td>
+                <td>
+               {% for category in post.categories.all %}
+               <a href="{% url 'category_list' category.id %}">{{ category }}</a>
+               {% endfor %}
+               </td>
            </tr>
            {% endfor %}
 
