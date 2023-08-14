@@ -4,9 +4,11 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 
 from NewsPaper import settings
+from NewsPaper.celery import app
 from .models import PostCategory
 
 
+@app.task
 def send_notifications(preview, pk, title, subscribers):
     html_content = render_to_string(
         'post_created_email.html',
@@ -37,4 +39,4 @@ def notify_about_new_post(sender, instance, **kwargs):
 
         subscribers = [s.email for s in subscribers]
 
-        send_notifications(instance.preview(), instance.pk, instance.title, subscribers)
+        send_notifications.delay(instance.preview(), instance.pk, instance.title, subscribers)
